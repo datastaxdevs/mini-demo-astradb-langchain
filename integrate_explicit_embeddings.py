@@ -4,14 +4,14 @@ Required dependencies:
     pip install \
         "langchain>=0.3,<0.4" \
         "langchain-astradb>=0.6,<0.7" \
-        "langchain-openai>=0.3,<0.4" \
-        "datasets>=3.5,<4.0"
+        "langchain-openai>=0.3,<0.4"
 
 Requires a `.env` file with environment variables, see `template.env`.
 """
 
 
 # Import dependencies
+import json
 import os
 from getpass import getpass
 
@@ -48,7 +48,7 @@ vector_store = AstraDBVectorStore(
 
 
 # Load data
-philo_dataset = load_dataset("datastax/philosopher-quotes")["train"]
+philo_dataset = json.load(open("data/philosopher-quotes.json"))
 
 print("An example entry:")
 print(philo_dataset[16])
@@ -58,14 +58,13 @@ print(philo_dataset[16])
 documents_to_insert = []
 
 for entry_idx, entry in enumerate(philo_dataset):
-    metadata = {"author": entry["author"]}
-    if entry["tags"]:
-        # Add metadata tags to the metadata dictionary
-        for tag in entry["tags"].split(";"):
-            metadata[tag] = "y"
+    metadata = {
+        "author": entry["author"],
+        **entry["metadata"],
+    }
     # Construct the Document, with the quote and metadata tags
     new_document = Document(
-        id=f"{entry['author'][:4]}_{entry_idx:03}",
+        id=entry["_id"],
         page_content=entry["quote"],
         metadata=metadata,
     )
