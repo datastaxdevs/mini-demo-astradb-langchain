@@ -11,8 +11,8 @@ Requires a `.env` file with environment variables, see `template.env`.
 
 
 # Import dependencies
-import json
 import os
+import requests
 from getpass import getpass
 
 from astrapy.info import VectorServiceOptions
@@ -21,7 +21,6 @@ from langchain_astradb import AstraDBVectorStore
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 
-from datasets import load_dataset
 from dotenv import load_dotenv
 
 
@@ -52,7 +51,11 @@ vector_store = AstraDBVectorStore(
 
 
 # Load data
-philo_dataset = json.load(open("data/philosopher-quotes.json"))
+philo_dataset = requests.get(
+    "https://raw.githubusercontent.com/"
+    "datastaxdevs/mini-demo-astradb-langchain/"
+    "refs/heads/main/data/philosopher-quotes.json"
+).json()
 
 print("An example entry:")
 print(philo_dataset[16])
