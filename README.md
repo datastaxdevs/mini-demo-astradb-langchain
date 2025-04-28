@@ -17,7 +17,7 @@ ASTRA_DB_APPLICATION_TOKEN="AstraCS:..."
 ASTRA_DB_KEYSPACE="..."             # OPTIONAL
 
 OPENAI_API_KEY="..."                # OPTIONAL (required if using explicit embeddings)
-ASTRA_DB_API_KEY_NAME="..."         # OPTIONAL (required if using 'vectorize')
+ASTRA_DB_API_KEY_NAME="..."         # OPTIONAL (required if using embedding provider integration, i.e. 'vectorize')
 ```
 
 Open in Jupyter and run each cell.
